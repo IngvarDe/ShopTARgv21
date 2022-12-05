@@ -1,6 +1,6 @@
-﻿namespace ShopTARgv21.Core.Dto
+﻿namespace ShopTARgv21.Models.Spaceship
 {
-    public class SpaceshipDto
+    public class SpaceshipEditViewModel
     {
         public Guid? Id { get; set; }
         public string Name { get; set; }

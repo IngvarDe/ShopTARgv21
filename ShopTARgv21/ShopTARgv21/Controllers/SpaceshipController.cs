@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopTARgv21.Core.Dto;
+using ShopTARgv21.Core.ServiceInterface;
 using ShopTARgv21.Data;
 using ShopTARgv21.Models.Spaceship;
 
@@ -7,13 +9,16 @@ namespace ShopTARgv21.Controllers
     public class SpaceshipController : Controller
     {
         private readonly ShopDbContext _context;
+        private readonly ISpaceshipServices _spaceshipServices;
 
         public SpaceshipController
             (
-                ShopDbContext context
+                ShopDbContext context,
+                ISpaceshipServices spaceshipServices
             )
         {
             _context = context;
+            _spaceshipServices = spaceshipServices;
         }
 
         [HttpGet]
@@ -31,6 +36,44 @@ namespace ShopTARgv21.Controllers
                 });
 
             return View(result);
+        }
+
+        [HttpGet]
+        public IActionResult Add() 
+        {
+            SpaceshipViewModel spaceship = new SpaceshipViewModel();
+
+            return View("Edit");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(SpaceshipViewModel vm) 
+        {
+            var dto = new SpaceshipDto()
+            {
+                Id = vm.Id,
+                Name = vm.Name,
+                ModelType = vm.ModelType,
+                SpaceshipBuilder = vm.SpaceshipBuilder,
+                PlaceOfBuild = vm.PlaceOfBuild,
+                EnginePower = vm.EnginePower,
+                LiftUpToSpaceByTonn = vm.LiftUpToSpaceByTonn,
+                Crew = vm.Crew,
+                Passengers = vm.Passengers,
+                LaunchDate = vm.LaunchDate,
+                BuildOfDate = vm.BuildOfDate,
+                CreatedAt = vm.CreatedAt,
+                ModifiedAt = vm.ModifiedAt,
+            };
+
+            var result = await _spaceshipServices.Add(dto);
+
+            if (result == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index), vm);
         }
     }
 }
