@@ -136,5 +136,49 @@ namespace ShopTARgv21.Controllers
 
             return RedirectToAction(nameof(Index), vm);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var spaceship = await _spaceshipServices.GetAsync(id);
+
+            if (spaceship == null)
+            {
+                return NotFound();
+            }
+
+            var vm = new SpaceshipViewModel()
+            {
+                Id = spaceship.Id,
+                Name = spaceship.Name,
+                ModelType = spaceship.ModelType,
+                SpaceshipBuilder = spaceship.SpaceshipBuilder,
+                PlaceOfBuild = spaceship.PlaceOfBuild,
+                EnginePower = spaceship.EnginePower,
+                LiftUpToSpaceByTonn = spaceship.LiftUpToSpaceByTonn,
+                Crew = spaceship.Crew,
+                Passengers = spaceship.Passengers,
+                LaunchDate = spaceship.LaunchDate,
+                BuildOfDate = spaceship.BuildOfDate,
+                CreatedAt = spaceship.CreatedAt,
+                ModifiedAt = spaceship.ModifiedAt,
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConirmation(Guid id)
+        {
+            var product = await _spaceshipServices.Delete(id);
+
+            if (product == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
