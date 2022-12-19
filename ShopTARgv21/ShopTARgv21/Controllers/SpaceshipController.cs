@@ -21,6 +21,7 @@ namespace ShopTARgv21.Controllers
             _spaceshipServices = spaceshipServices;
         }
 
+
         [HttpGet]
         public IActionResult Index()
         {
@@ -39,16 +40,18 @@ namespace ShopTARgv21.Controllers
             return View(result);
         }
 
+
         [HttpGet]
-        public IActionResult Add() 
+        public IActionResult Create() 
         {
             SpaceshipEditViewModel spaceship = new SpaceshipEditViewModel();
 
-            return View("Edit", spaceship);
+            return View("CreateUpdate", spaceship);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Add(SpaceshipViewModel vm) 
+        public async Task<IActionResult> Create(SpaceshipViewModel vm) 
         {
             var dto = new SpaceshipDto()
             {
@@ -67,7 +70,7 @@ namespace ShopTARgv21.Controllers
                 ModifiedAt = vm.ModifiedAt,
             };
 
-            var result = await _spaceshipServices.Add(dto);
+            var result = await _spaceshipServices.Create(dto);
 
             if (result == null)
             {
@@ -77,8 +80,9 @@ namespace ShopTARgv21.Controllers
             return RedirectToAction(nameof(Index), vm);
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Update(Guid id)
         {
             var spaceship = await _spaceshipServices.GetAsync(id);
 
@@ -104,11 +108,12 @@ namespace ShopTARgv21.Controllers
                 ModifiedAt = spaceship.ModifiedAt,
             };
 
-            return View(vm);
+            return View("CreateUpdate", vm);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Edit(SpaceshipEditViewModel vm)
+        public async Task<IActionResult> Update(SpaceshipEditViewModel vm)
         {
             var dto = new SpaceshipDto()
             {
@@ -168,8 +173,9 @@ namespace ShopTARgv21.Controllers
             return View(vm);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> DeleteConirmation(Guid id)
+        public async Task<IActionResult> DeleteConfirmation(Guid id)
         {
             var product = await _spaceshipServices.Delete(id);
 

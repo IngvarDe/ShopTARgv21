@@ -19,7 +19,7 @@ namespace ShopTARgv21.ApplicationServices.Services
             _context = context;
         }
 
-        public async Task<Spaceship> Add(SpaceshipDto dto)
+        public async Task<Spaceship> Create(SpaceshipDto dto)
         {
             Spaceship spaceship = new Spaceship();
 
