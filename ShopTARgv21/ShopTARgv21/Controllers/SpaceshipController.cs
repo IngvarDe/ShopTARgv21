@@ -224,7 +224,7 @@ namespace ShopTARgv21.Controllers
                 Id = file.ImageId
             };
 
-            var image = await _spaceshipServices.RemoveImage();
+            var image = await _spaceshipServices.RemoveImage(dto);
 
             if (image == null)
             {
